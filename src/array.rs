@@ -125,4 +125,32 @@ mod tests {
         let inner = &arr[1];
         assert_eq!(inner[0], Json::JsonBoolean(true));
     }
+
+    #[test]
+    fn test_parse_array_with_whitespace_and_newlines() {
+        let valid = "[  null ,\n true ,\t\"hi\"  , 42 ]";
+        let (arr, tail) = parse_array(valid).unwrap();
+        assert_eq!(tail, "");
+        assert_eq!(arr[0], Json::JsonNull);
+        assert_eq!(arr[1], Json::JsonBoolean(true));
+        assert_eq!(arr[2], Json::JsonString("hi".to_string()));
+        assert_eq!(arr[3], Json::JsonNumber(42.0));
+    }
+
+    #[test]
+    fn test_parse_array_deeply_nested() {
+        let valid = "[[[]], [null], [[true]]]";
+        let (arr, tail) = parse_array(valid).unwrap();
+        assert_eq!(tail, "");
+        assert_eq!(arr[0][0], Json::JsonArray(vec![]));
+        assert_eq!(arr[1][0], Json::JsonNull);
+        assert_eq!(arr[2][0][0], Json::JsonBoolean(true));
+    }
+
+    #[test]
+    fn test_parse_array_only_commas() {
+        let invalid = "[,]";
+        let result = parse_array(invalid);
+        assert!(result.is_err());
+    }
 }

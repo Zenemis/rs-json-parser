@@ -7,7 +7,7 @@ mod string;
 mod literals;
 mod number;
 
-use core::{Json, JsonError, parse};
+pub use core::{Json, JsonError, parse};
 
 impl From<&str> for Json {
     fn from(val: &str) -> Json {
@@ -24,16 +24,4 @@ impl From<String> for Json {
     fn from(val: String) -> Json {
         Json::from(val.as_str())
     }
-}
-
-
-
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_json_object() {
-        assert!(true);
-    }
-
 }

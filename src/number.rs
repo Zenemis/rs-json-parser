@@ -1,5 +1,3 @@
-use std::str::CharIndices;
-use std::str::FromStr;
 
 use crate::core;
 
@@ -106,6 +104,7 @@ pub fn parse_number(source: &str) -> Result<(Json, &str), JsonError> {
     Ok((Json::JsonNumber(num), rest))
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
 

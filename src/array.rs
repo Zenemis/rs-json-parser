@@ -65,11 +65,10 @@ impl IndexMut<usize> for Json {
     }
 }
 
-
+#[cfg(test)]
 mod tests {
-    use std::string;
-
     use super::*;
+    
     #[test]
     fn test_parse_array_valid() {
         let valid = r#"[null, true, "hello", 1]"#;

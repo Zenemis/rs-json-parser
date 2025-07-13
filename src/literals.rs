@@ -42,6 +42,7 @@ pub fn parse_null(source: &str) -> Result<(Json, &str), JsonError> {
     }
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
 

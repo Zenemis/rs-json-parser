@@ -73,7 +73,7 @@ pub fn parse_string(source: &str) -> Result<(Json, &str), JsonError> {
     Err(JsonError::SyntaxError(format!("Invalid string : \"{}", source)))
 }
 
-
+#[cfg(test)]
 mod tests {
     use super::*;
 

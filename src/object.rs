@@ -120,7 +120,9 @@ impl IndexMut<&String> for Json {
     }
 }
 
+#[cfg(test)]
 mod tests {
+    use super::*;
 
     #[test]
     fn test_parse_field_valid() {

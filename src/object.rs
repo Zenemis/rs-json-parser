@@ -7,25 +7,6 @@ use crate::utils;
 use core::{Json, JsonError};
 use utils::ignore_ws;
 
-fn parse_value(source: &str) -> Result<(Json, &str), JsonError> {
-    let mut s : &str = ignore_ws(source);
-    let chars = s.chars();
-    if let Some(colon) = chars.clone().next() {
-        if colon == ':' {
-            s = ignore_ws(&s[1..]);
-            parse(s)
-        } else {
-            return Err(JsonError::SyntaxError(
-                format!("Expected ':' for JSON object definition, found '{}'", colon),
-            ));
-        }
-    } else {
-        return Err(JsonError::SyntaxError(
-            "Expected ':' for JSON object definition, found end of input".to_string(),
-        ));
-    }
-}
-
 fn parse_field(source: &str) -> Result<(String, &str), JsonError> {
     let s = ignore_ws(source);
     let mut chars = s.chars();
@@ -140,9 +121,6 @@ impl IndexMut<&String> for Json {
 }
 
 mod tests {
-    use std::string;
-
-    use super::*;
 
     #[test]
     fn test_parse_field_valid() {
@@ -187,36 +165,6 @@ mod tests {
     fn test_parse_field_syntax_error_last_quote() {
         let valid = "  \"field ";
         let result = parse_field(valid);
-        assert!(result.is_err());
-    }
-
-    #[test]
-    fn test_parse_value_valid_string() {
-        let valid = r#": "type1""#;
-        let (val, tail) = parse_value(valid).unwrap();
-        assert_eq!(val, Json::JsonString("type1".to_string()));
-        assert_eq!(tail, "");
-    }
-
-    #[test]
-    fn test_parse_value_valid_number() {
-        let valid = ": 1234 rest";
-        let (val, tail) = parse_value(valid).unwrap();
-        assert_eq!(val, Json::JsonNumber(1234.0));
-        assert_eq!(tail, " rest");
-    }
-
-    #[test]
-    fn test_parse_value_missing_colon() {
-        let invalid = "  \"type1\"";
-        let result = parse_value(invalid);
-        assert!(result.is_err());
-    }
-
-    #[test]
-    fn test_parse_value_empty_input() {
-        let invalid = "";
-        let result = parse_value(invalid);
         assert!(result.is_err());
     }
 

@@ -8,3 +8,8 @@ criterion = "0.5"
 ureq = "2"
 json = "0.12"
 json-parser = { path = "../" }
+
+[[bench]]
+name = "json_benchmark"
+harness = false
+path = "src/main.rs"
